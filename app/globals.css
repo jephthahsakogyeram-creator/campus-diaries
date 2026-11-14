@@ -1,0 +1,48 @@
+@import "tailwindcss";
+
+@theme {
+  /* Brand colors based on the approved design */
+  --color-paper: #F7F3ED;
+  --color-paper-deep: #EFE9DE;
+  --color-ink: #242321;     /* Richer black */
+  --color-muted: #6B6257;
+  --color-line: #E3DACB;
+  --color-accent: #B94F38;  /* The exact terracotta from their image */
+  --color-accent-soft: #D97757;
+
+  /* Fonts */
+  --font-serif: var(--font-fraunces), Georgia, serif;
+  --font-sans: var(--font-inter), system-ui, sans-serif;
+}
+/* Base styles */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-serif);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  line-height: 1.1;
+}
+
+/* Selection — small delight, agencies notice */
+::selection {
+  background-color: var(--color-accent);
+  color: var(--color-paper);
+}
+
+/* Focus ring — accessibility, non-negotiable */
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 3px;
+  border-radius: 2px;
+}

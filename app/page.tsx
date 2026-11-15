@@ -1,9 +1,17 @@
 import Link from "next/link";
-import { articles, podcasts, team, socials } from "@/lib/content";
-import ArticleCard from "@/components/ArticleCard";
+import { supabase } from "@/utils/supabase";
 
-export default function Home() {
-  const latestArticles = articles.slice(0, 2);
+export const revalidate = 0; // Always fetch fresh data
+
+export default async function Home() {
+  // Fetch latest data from Supabase
+  const { data: posts } = await supabase
+    .from("posts")
+    .select("*")
+    .order("created_at", { ascending: false });
+
+  const articles = posts?.filter((p) => p.type === "article").slice(0, 2) || [];
+  const podcasts = posts?.filter((p) => p.type === "podcast") || [];
   const featuredPodcast = podcasts[0];
 
   return (
@@ -62,127 +70,81 @@ export default function Home() {
             </Link>
           </div>
           <div className="grid gap-12 sm:grid-cols-2">
-            {latestArticles.map((article) => (
-              <ArticleCard key={article.slug} article={article} />
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* 4. MEET THE TEAM */}
-      <section className="border-t border-line bg-paper-deep py-20">
-        <div className="mx-auto max-w-6xl px-6">
-          <div className="mb-12">
-            <h2 className="text-3xl font-serif text-ink">Meet the Team</h2>
-            <p className="mt-2 text-muted">The executives behind the stories.</p>
-          </div>
-          <div className="grid gap-8 sm:grid-cols-3">
-            {team.map((member) => (
-              <div key={member.name} className="flex flex-col gap-4">
-                <div className="flex h-64 w-full items-center justify-center rounded-sm border border-line bg-paper">
-                  <span className="text-5xl font-serif text-ink/20">
-                    {member.name.charAt(0)}
-                  </span>
-                </div>
-                <div>
-                  <h3 className="text-xl font-serif text-ink">{member.name}</h3>
-                  <p className="text-sm font-bold uppercase tracking-widest text-accent mt-1 mb-2">{member.role}</p>
-                  <p className="text-sm text-muted leading-relaxed">{member.bio}</p>
-                </div>
+            {articles.map((article) => (
+              <div key={article.id} className="group flex flex-col gap-3">
+                <span className="text-xs font-medium uppercase tracking-wider text-muted">{article.category}</span>
+                <Link href={`/articles/${article.slug}`}>
+                  <h3 className="text-2xl font-serif text-ink group-hover:text-accent transition-colors">{article.title}</h3>
+                </Link>
+                <p className="text-muted leading-relaxed">{article.excerpt}</p>
+                <div className="mt-2 text-sm text-muted">By {article.author} on {new Date(article.created_at).toLocaleDateString()}</div>
               </div>
             ))}
           </div>
+          {articles.length === 0 && <p className="text-muted">No articles published yet.</p>}
         </div>
       </section>
+
 
       {/* 5. FEATURED PODCAST */}
-      <section className="border-t border-line bg-paper py-20">
-        <div className="mx-auto max-w-6xl px-6">
-          <div className="flex items-end justify-between mb-10">
-            <h2 className="text-3xl font-serif text-ink">Latest Podcast</h2>
-            <Link href="/podcasts" className="text-sm font-bold text-accent hover:underline uppercase tracking-wide">
-              View all &rarr;
-            </Link>
-          </div>
-          <div className="flex flex-col gap-8 sm:flex-row sm:items-center bg-paper-deep p-8 border border-line rounded-sm">
-            <div className="flex-1">
-              <span className="text-xs font-bold uppercase tracking-wider text-accent">
-                Featured Episode
-              </span>
-              <h3 className="mt-2 text-3xl font-serif text-ink">
-                {featuredPodcast.title}
-              </h3>
-              <p className="mt-4 text-muted text-lg leading-relaxed">
-                {featuredPodcast.description}
-              </p>
-              <div className="mt-6 text-sm font-medium text-muted">
-                {featuredPodcast.date} &middot; {featuredPodcast.duration}
-              </div>
-            </div>
-            <div className="flex-shrink-0">
-              <Link
-                href={`/podcasts/${featuredPodcast.slug}`}
-                className="inline-flex h-20 w-20 items-center justify-center rounded-full bg-accent text-paper transition-transform hover:scale-105"
-                aria-label="Play podcast"
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-10 h-10 ml-1">
-                  <path d="M8 5v14l11-7z" />
-                </svg>
+      {featuredPodcast && (
+        <section className="border-t border-line bg-paper py-20">
+          <div className="mx-auto max-w-6xl px-6">
+            <div className="flex items-end justify-between mb-10">
+              <h2 className="text-3xl font-serif text-ink">Latest Podcast</h2>
+              <Link href="/podcasts" className="text-sm font-bold text-accent hover:underline uppercase tracking-wide">
+                View all &rarr;
               </Link>
             </div>
+            <div className="flex flex-col gap-8 sm:flex-row sm:items-center bg-paper-deep p-8 border border-line rounded-sm">
+              <div className="flex-1">
+                <span className="text-xs font-bold uppercase tracking-wider text-accent">Featured Episode</span>
+                <h3 className="mt-2 text-3xl font-serif text-ink">{featuredPodcast.title}</h3>
+                <p className="mt-4 text-muted text-lg leading-relaxed">{featuredPodcast.excerpt}</p>
+                <div className="mt-6 text-sm font-medium text-muted">{new Date(featuredPodcast.created_at).toLocaleDateString()} &middot; {featuredPodcast.duration}</div>
+              </div>
+              <div className="flex-shrink-0">
+                <Link href={`/podcasts/${featuredPodcast.slug}`} className="inline-flex h-20 w-20 items-center justify-center rounded-full bg-accent text-paper transition-transform hover:scale-105" aria-label="Play podcast">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-10 h-10 ml-1"><path d="M8 5v14l11-7z" /></svg>
+                </Link>
+              </div>
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
-      {/* 6. ABOUT US / VISION / MISSION */}
+      {/* 6. ABOUT US / VISION / MISSION (Keep existing hardcoded text) */}
       <section className="border-t border-line bg-paper-deep py-24">
         <div className="mx-auto max-w-6xl px-6 grid gap-16 md:grid-cols-3">
           <div>
             <h2 className="text-2xl font-serif text-ink mb-4">About Us</h2>
-            <p className="text-muted leading-relaxed text-sm sm:text-base">
-              Campus Diaries is a student-led media and creative platform that tells the stories of student life beyond academics.<br/><br/>
-              We explore campus experiences, student stories, entertainment, lifestyle, culture and creativity through articles, interviews, podcasts, videos and other forms of storytelling.<br/><br/>
-              We want to create a space where students can express themselves, share their experiences and have their voices heard.
-            </p>
+            <p className="text-muted leading-relaxed text-sm sm:text-base">Campus Diaries is a student-led media and creative platform that tells the stories of student life beyond academics.<br/><br/>We explore campus experiences, student stories, entertainment, lifestyle, culture and creativity through articles, interviews, podcasts, videos and other forms of storytelling.<br/><br/>We want to create a space where students can express themselves, share their experiences and have their voices heard.</p>
           </div>
           <div>
             <h2 className="text-2xl font-serif text-ink mb-4">Our Vision</h2>
-            <p className="text-muted leading-relaxed text-sm sm:text-base">
-              To become a platform that celebrates student voices, creativity and the experiences that make campus life unique.
-            </p>
+            <p className="text-muted leading-relaxed text-sm sm:text-base">To become a platform that celebrates student voices, creativity and the experiences that make campus life unique.</p>
           </div>
           <div>
             <h2 className="text-2xl font-serif text-ink mb-4">Our Mission</h2>
-            <p className="text-muted leading-relaxed text-sm sm:text-base">
-              To give students a platform to share their stories, express their ideas, showcase their talents and connect with others through media and creative expression.
-            </p>
+            <p className="text-muted leading-relaxed text-sm sm:text-base">To give students a platform to share their stories, express their ideas, showcase their talents and connect with others through media and creative expression.</p>
           </div>
         </div>
       </section>
 
-      {/* 7. FIND US & GET INVOLVED */}
+      {/* 7. FIND US & GET INVOLVED (Keep existing) */}
       <section className="border-t border-line bg-ink py-20 text-paper">
         <div className="mx-auto max-w-6xl px-6 flex flex-col md:flex-row justify-between items-center gap-12">
           <div className="text-center md:text-left">
             <h2 className="text-4xl font-serif mb-4">Get Involved</h2>
-            <p className="text-paper/70 max-w-md text-lg">
-              Want to share a story, join the podcast, or showcase your photography? We are always looking for new voices.
-            </p>
-            <a href="mailto:hello@campusdiaries.com" className="inline-block mt-6 border-b border-accent text-accent font-bold pb-1 hover:text-paper hover:border-paper transition-colors">
-              hello@campusdiaries.com
-            </a>
+            <p className="text-paper/70 max-w-md text-lg">Want to share a story, join the podcast, or showcase your photography? We are always looking for new voices.</p>
+            <a href="mailto:hello@campusdiaries.com" className="inline-block mt-6 border-b border-accent text-accent font-bold pb-1 hover:text-paper hover:border-paper transition-colors">hello@campusdiaries.com</a>
           </div>
-
           <div className="text-center md:text-right">
             <h3 className="text-sm font-bold uppercase tracking-widest text-paper/50 mb-6">Find us online</h3>
             <ul className="flex flex-wrap gap-6 justify-center md:justify-end">
-              {socials.map((social) => (
-                <li key={social.name}>
-                  <a href={social.url} target="_blank" rel="noreferrer" className="text-lg hover:text-accent transition-colors">
-                    {social.name}
-                  </a>
-                </li>
-              ))}
+              <li><a href="#" className="text-lg hover:text-accent transition-colors">Instagram</a></li>
+              <li><a href="#" className="text-lg hover:text-accent transition-colors">TikTok</a></li>
+              <li><a href="#" className="text-lg hover:text-accent transition-colors">YouTube</a></li>
             </ul>
           </div>
         </div>

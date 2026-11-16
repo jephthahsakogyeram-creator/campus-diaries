@@ -53,8 +53,8 @@ export default async function Home() {
       <section className="w-full px-6 mb-20">
         <div className="mx-auto max-w-6xl h-[40vh] sm:h-[60vh] relative rounded-sm overflow-hidden">
           <img 
-            src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?q=80&w=2000&auto=format&fit=crop"
-            alt="Students laughing on campus"
+            src="/hero.jpg" 
+            alt="Campus Diaries team"
             className="absolute inset-0 h-full w-full object-cover"
           />
         </div>

@@ -139,12 +139,19 @@ export default async function Home() {
             <p className="text-paper/70 max-w-md text-lg">Want to share a story, join the podcast, or showcase your photography? We are always looking for new voices.</p>
             <a href="mailto:hello@campusdiaries.com" className="inline-block mt-6 border-b border-accent text-accent font-bold pb-1 hover:text-paper hover:border-paper transition-colors">hello@campusdiaries.com</a>
           </div>
-          <div className="text-center md:text-right">
+           <div className="text-center md:text-right">
             <h3 className="text-sm font-bold uppercase tracking-widest text-paper/50 mb-6">Find us online</h3>
             <ul className="flex flex-wrap gap-6 justify-center md:justify-end">
-              <li><a href="#" className="text-lg hover:text-accent transition-colors">Instagram</a></li>
-              <li><a href="#" className="text-lg hover:text-accent transition-colors">TikTok</a></li>
-              <li><a href="#" className="text-lg hover:text-accent transition-colors">YouTube</a></li>
+              <li>
+                <a href="https://www.instagram.com/campusdiaries.hq" target="_blank" rel="noopener noreferrer" className="text-lg hover:text-accent transition-colors">
+                  Instagram
+                </a>
+              </li>
+              <li>
+                <a href="https://www.tiktok.com/@campusdiaries..hq" target="_blank" rel="noopener noreferrer" className="text-lg hover:text-accent transition-colors">
+                  TikTok
+                </a>
+              </li>
             </ul>
           </div>
         </div>

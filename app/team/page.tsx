@@ -1,40 +1,64 @@
 export default function TeamPage() {
-  // We will use a larger array here for the full team
   const fullTeam = [
     {
       name: "Isabella",
-      role: "Editor-in-Chief",
-      bio: "A senior communications major who loves a good story and an iced latte. She oversees all content and keeps the team on track.",
-    },
-    {
-      name: "Michael",
-      role: "Podcast Director",
-      bio: "The voice behind the mic. You can find him editing audio at 2 AM. He handles all interview bookings and sound design.",
+      role: "Co-Founder & Creative Director / Executive Producer",
+      bio: "Leading the creative vision for Campus Diaries, Isabella ensures every story we tell is authentic, engaging, and beautifully presented. She keeps the team inspired and on track.",
     },
     {
       name: "Freddy",
-      role: "Creative Lead",
-      bio: "Capturing campus life one photo at a time. Usually carrying three cameras. He leads the visual direction of Campus Diaries.",
+      role: "Co-Founder & Creative Lead",
+      bio: "As the visual mastermind, Freddy directs the aesthetic of our photography and media projects. He is usually seen around campus with multiple cameras, capturing the moments that define student life.",
     },
     {
-      name: "Deron",
-      role: "Head of Writing",
-      bio: "A literature enthusiast who believes every student has a story worth telling. He manages the writing team and edits all articles.",
-    },
-    {
-      name: "Stephen",
-      role: "Social Media Manager",
-      bio: "The one behind the Instagram posts and TikTok trends. He makes sure Campus Diaries stays connected with the student body.",
-    },
-    {
-      name: "Gabby",
-      role: "Events Coordinator",
-      bio: "The mastermind behind our live campus events and pop-up interviews. If there's a microphone on campus, he's probably nearby.",
+      name: "Michael",
+      role: "Director of Creative Production",
+      bio: "Michael oversees the technical side of our podcast and media production. From booking guests to mastering the audio, he ensures every episode sounds professional and polished.",
     },
     {
       name: "Jephthah",
-      role: "Video Producer",
-      bio: "The mastermind behind our live campus events and pop-up interviews. And also very good with a video camera, can capture anything.",
+      role: "Media & Production Team, Senior Developer",
+      bio: "The architect behind our digital presence. Jephthah builds and maintains the Campus Diaries website, ensuring our stories reach the world seamlessly through code.",
+    },
+    {
+      name: "Derron",
+      role: "Media & Production Team, Junior Developer",
+      bio: "Supporting the digital experience, Derron works on the technical foundations of our platform. He is passionate about bringing creative ideas to life through clean and efficient code.",
+    },
+    {
+      name: "Gabby",
+      role: "Media & Production Team",
+      bio: "Whether it's running live campus events or managing behind-the-scenes production, Gabby is always right in the middle of the action, making sure everything runs smoothly.",
+    },
+    {
+      name: "Stephen",
+      role: "Community Engagement & Partnerships Coordinator",
+      bio: "Stephen is the bridge between Campus Diaries and the student body. He manages our social media channels and builds partnerships with other campus organizations to grow our community.",
+    },
+    {
+      name: "Lordina",
+      role: "Podcast Host & Producer",
+      bio: "With a natural curiosity and a welcoming voice, Lordina guides our podcast conversations. She loves diving deep into the stories and issues that matter most to students.",
+    },
+    {
+      name: "Davis",
+      role: "Podcast Host & Producer",
+      bio: "Davis brings energy and insight to the microphone. As a host and producer, he helps shape the direction of our episodes and finds the most interesting guests on campus.",
+    },
+    {
+      name: "Valentine",
+      role: "Podcast Host & Editor",
+      bio: "Valentine is the person who makes the magic happen in post-production. As an editor, he polishes every episode to perfection, while also stepping up to the mic to host when needed.",
+    },
+    {
+      name: "Precious",
+      role: "Creative Production Assistant",
+      bio: "The unsung hero of our production process. Precious provides vital support to the creative team, coordinating schedules, organizing assets, and helping bring big ideas to life.",
+    },
+    {
+      name: "Michelle",
+      role: "Theatre & Performance Lead",
+      bio: "Bringing a dramatic flair to the team, Michelle leads our performance-based content. She helps students express themselves creatively through acting, spoken word, and live storytelling.",
     }
   ];
 
@@ -50,7 +74,6 @@ export default function TeamPage() {
       <div className="grid gap-x-8 gap-y-16 sm:grid-cols-2 md:grid-cols-3">
         {fullTeam.map((member) => (
           <div key={member.name} className="flex flex-col items-center text-center">
-            {/* Placeholder for future photo */}
             <div className="mb-6 flex h-56 w-56 items-center justify-center rounded-full border border-line bg-paper-deep">
               <span className="text-7xl font-serif text-ink/20">
                 {member.name.charAt(0)}

@@ -28,7 +28,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${fraunces.variable} ${inter.variable}`}>
+<html lang="en" className={`${fraunces.variable} ${inter.variable}`} data-scroll-behavior="smooth">
       <body className="flex min-h-screen flex-col">
         <Nav />
         <main className="flex-1">{children}</main>

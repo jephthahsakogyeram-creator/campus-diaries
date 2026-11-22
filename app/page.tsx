@@ -1,3 +1,4 @@
+import ImageCarousel from "@/components/ImageCarousel";
 import Link from "next/link";
 import { supabase } from "@/utils/supabase";
 
@@ -49,14 +50,10 @@ export default async function Home() {
         </div>
       </section>
 
-      {/* 2. CINEMATIC PHOTO SECTION */}
+      {/* 2. CINEMATIC PHOTO SECTION (Carousel) */}
       <section className="w-full px-6 mb-20">
-        <div className="mx-auto max-w-6xl h-[40vh] sm:h-[60vh] relative rounded-sm overflow-hidden">
-          <img 
-            src="/hero.jpg" 
-            alt="Campus Diaries team"
-            className="absolute inset-0 h-full w-full object-cover"
-          />
+        <div className="mx-auto max-w-6xl">
+          <ImageCarousel />
         </div>
       </section>
 

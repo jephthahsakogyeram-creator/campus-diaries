@@ -1,13 +1,39 @@
 import Link from "next/link";
-import { supabase } from "@/utils/supabase";
+import { createServerClient } from "@supabase/ssr";
+import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
+import LogoutButton from "@/components/LogoutButton";
 
 export default async function AdminDashboard() {
-  // Check if the user is logged in
-  const { data: { session } } = await supabase.auth.getSession();
+  const cookieStore = await cookies();
+  
+  // Initialize Supabase with proper server-side cookie handling
+  const supabase = createServerClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    {
+      cookies: {
+        getAll() {
+          return cookieStore.getAll()
+        },
+        setAll(cookiesToSet) {
+          try {
+            cookiesToSet.forEach(({ name, value, options }) =>
+              cookieStore.set(name, value, options)
+            )
+          } catch {
+            // Ignore if called from a Server Component
+          }
+        },
+      },
+    }
+  );
+
+  // Get the logged-in user
+  const { data: { user } } = await supabase.auth.getUser();
 
   // If not logged in, kick them back to the login page
-  if (!session) {
+  if (!user) {
     redirect("/admin/login");
   }
 
@@ -20,17 +46,9 @@ export default async function AdminDashboard() {
       <div className="mb-12 flex items-center justify-between border-b border-line pb-8">
         <div>
           <h1 className="text-4xl font-serif text-ink">Admin Dashboard</h1>
-          <p className="mt-2 text-muted">Welcome back, {session.user.email}</p>
+          <p className="mt-2 text-muted">Welcome back, {user.email}</p>
         </div>
-        <form action={async () => {
-          "use server";
-          await supabase.auth.signOut();
-          redirect("/");
-        }}>
-          <button className="text-sm font-medium text-muted hover:text-accent underline underline-offset-4">
-            Log Out
-          </button>
-        </form>
+        <LogoutButton />
       </div>
 
       <div className="grid gap-6 md:grid-cols-2">

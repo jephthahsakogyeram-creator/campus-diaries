@@ -9,8 +9,8 @@ export default async function Home() {
   const { data: posts } = await supabase
     .from("posts")
     .select("*")
+    .eq("status", "published") // <-- Add this
     .order("created_at", { ascending: false });
-
   const articles = posts?.filter((p) => p.type === "article").slice(0, 2) || [];
   const podcasts = posts?.filter((p) => p.type === "podcast") || [];
   const featuredPodcast = podcasts[0];

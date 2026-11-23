@@ -9,6 +9,7 @@ type Post = {
   title: string;
   slug: string;
   type: "article" | "podcast";
+  status: "draft" | "published";
   created_at: string;
 };
 
@@ -19,6 +20,7 @@ export default function AdminPostsPage() {
   // Form State
   const [title, setTitle] = useState("");
   const [type, setType] = useState<"article" | "podcast">("article");
+  const [status, setStatus] = useState<"draft" | "published">("published"); // NEW
   const [excerpt, setExcerpt] = useState("");
   const [content, setContent] = useState("");
   const [author, setAuthor] = useState("");
@@ -41,13 +43,13 @@ export default function AdminPostsPage() {
     e.preventDefault();
     setSubmitting(true);
 
-    // Create a URL-friendly slug from the title
     const slug = title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)+/g, "");
 
     const { error } = await supabase.from("posts").insert({
       title,
       slug,
       type,
+      status, // NEW
       excerpt,
       content,
       author,
@@ -59,7 +61,6 @@ export default function AdminPostsPage() {
     if (error) {
       alert("Error saving post: " + error.message);
     } else {
-      // Reset form
       setTitle("");
       setExcerpt("");
       setContent("");
@@ -67,6 +68,7 @@ export default function AdminPostsPage() {
       setCategory("");
       setVideoUrl("");
       setDuration("");
+      setStatus("published");
       fetchPosts();
     }
     setSubmitting(false);
@@ -136,11 +138,23 @@ export default function AdminPostsPage() {
           )}
         </div>
 
+        {/* Status Dropdown (NEW) */}
+        <div className="mt-4">
+          <label className="block text-sm font-medium text-ink mb-2">Publishing Status</label>
+          <select 
+            value={status} onChange={(e) => setStatus(e.target.value as "draft" | "published")}
+            className="w-full sm:w-1/2 rounded-sm border border-line bg-white px-4 py-2 text-ink focus:border-accent focus:outline-none"
+          >
+            <option value="published">Publish Immediately</option>
+            <option value="draft">Save as Draft</option>
+          </select>
+        </div>
+
         <button 
           type="submit" disabled={submitting}
           className="mt-6 w-full rounded-sm bg-accent px-6 py-3 text-sm font-bold uppercase tracking-wider text-paper transition-colors hover:bg-accent-soft disabled:opacity-50"
         >
-          {submitting ? "Publishing..." : "Publish Post"}
+          {submitting ? "Saving..." : "Save Post"}
         </button>
       </form>
 
@@ -149,7 +163,12 @@ export default function AdminPostsPage() {
         {posts.map((post) => (
           <div key={post.id} className="flex flex-col sm:flex-row sm:items-center justify-between rounded-sm border border-line bg-paper p-4">
             <div>
-              <span className="text-xs font-bold uppercase tracking-wider text-accent">{post.type}</span>
+              <div className="flex items-center gap-3 mb-1">
+                <span className="text-xs font-bold uppercase tracking-wider text-accent">{post.type}</span>
+                <span className={`text-xs font-bold uppercase tracking-wider ${post.status === 'draft' ? 'text-yellow-600' : 'text-green-600'}`}>
+                  {post.status}
+                </span>
+              </div>
               <h3 className="text-xl font-serif text-ink">{post.title}</h3>
               <p className="text-sm text-muted">{new Date(post.created_at).toLocaleDateString()}</p>
             </div>

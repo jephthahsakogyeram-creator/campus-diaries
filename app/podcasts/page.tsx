@@ -8,8 +8,8 @@ export default async function PodcastsPage() {
     .from("posts")
     .select("*")
     .eq("type", "podcast")
+    .eq("status", "published") 
     .order("created_at", { ascending: false });
-
   return (
     <div className="mx-auto w-full max-w-6xl px-6 py-20">
       <div className="mb-12 border-b border-line pb-8">

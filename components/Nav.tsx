@@ -40,11 +40,15 @@ export default function Nav() {
 
         {/* Mobile Menu Button (Hamburger) */}
         <button
-          className="sm:hidden text-ink p-2"
-          onClick={() => setIsOpen(!isOpen)}
+          className="relative z-50 block sm:hidden text-ink p-3 -mr-3" // Added z-50, block, and negative margin for a bigger tap area
+          onClick={(e) => {
+            e.preventDefault();
+            setIsOpen(!isOpen);
+          }}
           aria-label="Toggle menu"
+          type="button" // Crucial: prevents accidental form submissions
         >
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-6 h-6">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-8 h-8"> {/* Made icon slightly larger */}
             {isOpen ? (
               <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
             ) : (
@@ -52,7 +56,6 @@ export default function Nav() {
             )}
           </svg>
         </button>
-      </nav>
 
       {/* Mobile Dropdown Menu */}
       {isOpen && (

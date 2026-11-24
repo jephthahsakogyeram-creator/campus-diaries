@@ -5,7 +5,6 @@ import useEmblaCarousel from "embla-carousel-react";
 import Autoplay from "embla-carousel-autoplay";
 
 export default function ImageCarousel() {
-  // We add a small stopOnInteraction: false so it keeps sliding even if they swipe
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true }, [
     Autoplay({ delay: 4000, stopOnInteraction: false }),
   ]);
@@ -30,7 +29,6 @@ export default function ImageCarousel() {
 
   return (
     <div className="relative w-full overflow-hidden rounded-sm">
-      {/* Added touch-pan-y to ensure smooth vertical scrolling while swiping horizontally */}
       <div className="overflow-hidden touch-pan-y" ref={emblaRef}>
         <div className="flex">
           {images.map((image, index) => (
@@ -47,7 +45,6 @@ export default function ImageCarousel() {
         </div>
       </div>
 
-      {/* Navigation Dots - made bigger for mobile tapping */}
       <div className="absolute bottom-4 left-1/2 flex -translate-x-1/2 gap-3">
         {images.map((_, index) => (
           <button

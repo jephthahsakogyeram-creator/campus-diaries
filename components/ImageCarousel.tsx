@@ -5,9 +5,10 @@ import useEmblaCarousel from "embla-carousel-react";
 import Autoplay from "embla-carousel-autoplay";
 
 export default function ImageCarousel() {
-  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true }, [
-    Autoplay({ delay: 4000, stopOnInteraction: false }),
-  ]);
+  const [emblaRef, emblaApi] = useEmblaCarousel(
+    { loop: true, align: "start" }, 
+    [Autoplay({ delay: 4000, stopOnInteraction: false })]
+  );
 
   const [selectedIndex, setSelectedIndex] = useState(0);
 
@@ -28,8 +29,8 @@ export default function ImageCarousel() {
   ];
 
   return (
-    <div className="relative w-full overflow-hidden rounded-sm">
-      <div className="overflow-hidden touch-pan-y" ref={emblaRef}>
+    <div className="relative w-full overflow-hidden rounded-sm z-0">
+      <div className="overflow-hidden cursor-grab active:cursor-grabbing touch-pan-y" ref={emblaRef}>
         <div className="flex">
           {images.map((image, index) => (
             <div className="relative min-w-0 flex-[0_0_100%]" key={index}>
@@ -37,21 +38,20 @@ export default function ImageCarousel() {
                 <img
                   src={image.src}
                   alt={image.alt}
-                  className="absolute inset-0 h-full w-full object-cover"
+                  className="absolute inset-0 h-full w-full object-cover pointer-events-none select-none"
                 />
               </div>
             </div>
           ))}
         </div>
       </div>
-
-      <div className="absolute bottom-4 left-1/2 flex -translate-x-1/2 gap-3">
+      <div className="absolute bottom-4 left-1/2 z-10 flex -translate-x-1/2 gap-2">
         {images.map((_, index) => (
           <button
             key={index}
             onClick={() => emblaApi?.scrollTo(index)}
-            className={`h-2.5 w-2.5 rounded-full transition-colors ${
-              index === selectedIndex ? "bg-accent" : "bg-paper/50 hover:bg-paper"
+            className={`h-3 w-3 rounded-full transition-colors ${
+              index === selectedIndex ? "bg-accent" : "bg-paper/70 hover:bg-paper"
             }`}
             aria-label={`Go to slide ${index + 1}`}
           />

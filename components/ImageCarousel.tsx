@@ -24,8 +24,8 @@ export default function ImageCarousel() {
   }, [emblaApi, onSelect]);
 
   const images = [
-    { src: "/hero.jpg", alt: "Campus Diaries team" },
-    { src: "/hero2.jpeg", alt: "Students working together" }, 
+    { src: "/hero.jpg", alt: "Students working together" },
+    { src: "/hero2.jpg", alt: "Campus Diaries team" }, 
   ];
 
   return (

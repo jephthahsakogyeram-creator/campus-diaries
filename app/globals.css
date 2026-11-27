@@ -55,3 +55,12 @@ html, body {
   width: 100%;
 }
 }
+
+.dark {
+  --color-paper: #121212;       /* Very dark grey background */
+  --color-paper-deep: #1E1E1E;  /* Slightly lighter grey for cards */
+  --color-ink: #EDEDED;         /* Off-white text */
+  --color-muted: #A3A3A3;       /* Grey secondary text */
+  --color-line: #333333;        /* Dark borders */
+  --color-accent: #D97757;      /* A slightly lighter terracotta for dark mode contrast */
+}

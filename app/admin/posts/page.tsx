@@ -1,5 +1,6 @@
 "use client";
 
+import RichTextEditor from "@/components/RichTextEditor";
 import { useState, useEffect } from "react";
 import { supabase } from "@/utils/supabase";
 import Link from "next/link";
@@ -20,7 +21,7 @@ export default function AdminPostsPage() {
   // Form State
   const [title, setTitle] = useState("");
   const [type, setType] = useState<"article" | "podcast">("article");
-  const [status, setStatus] = useState<"draft" | "published">("published"); // NEW
+  const [status, setStatus] = useState<"draft" | "published">("published");
   const [excerpt, setExcerpt] = useState("");
   const [content, setContent] = useState("");
   const [author, setAuthor] = useState("");
@@ -49,7 +50,7 @@ export default function AdminPostsPage() {
       title,
       slug,
       type,
-      status, // NEW
+      status,
       excerpt,
       content,
       author,
@@ -131,14 +132,14 @@ export default function AdminPostsPage() {
               />
             </>
           ) : (
-            <textarea 
-              placeholder="Full Article Content (Paragraphs)" value={content} onChange={(e) => setContent(e.target.value)} required rows={6}
-              className="sm:col-span-2 rounded-sm border border-line bg-white px-4 py-2 text-ink focus:border-accent focus:outline-none"
-            />
+            <div className="sm:col-span-2">
+              <label className="block text-sm font-medium text-ink mb-2">Article Content</label>
+              <RichTextEditor content={content} onChange={setContent} />
+            </div>
           )}
         </div>
 
-        {/* Status Dropdown (NEW) */}
+        {/* Status Dropdown */}
         <div className="mt-4">
           <label className="block text-sm font-medium text-ink mb-2">Publishing Status</label>
           <select 

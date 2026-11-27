@@ -1,8 +1,9 @@
-import type { Metadata } from "next";
+﻿import type { Metadata } from "next";
 import { Fraunces, Inter } from "next/font/google";
 import "./globals.css";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
+import ThemeProvider from "@/components/ThemeProvider";
 
 const fraunces = Fraunces({
   subsets: ["latin"],
@@ -21,6 +22,7 @@ export const metadata: Metadata = {
   description:
     "Stories, podcasts, and moments from our campus — collected, curated, and told by students.",
 };
+
 export const viewport = {
   width: "device-width",
   initialScale: 1,
@@ -32,11 +34,18 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-<html lang="en" className={`${fraunces.variable} ${inter.variable}`} data-scroll-behavior="smooth">
+    <html 
+      lang="en" 
+      className={`${fraunces.variable} ${inter.variable}`} 
+      data-scroll-behavior="smooth"
+      suppressHydrationWarning
+    >
       <body className="flex min-h-screen flex-col">
-        <Nav />
-        <main className="flex-1">{children}</main>
-        <Footer />
+        <ThemeProvider>
+          <Nav />
+          <main className="flex-1">{children}</main>
+          <Footer />
+        </ThemeProvider>
       </body>
     </html>
   );

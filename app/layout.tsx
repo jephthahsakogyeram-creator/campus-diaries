@@ -21,6 +21,10 @@ export const metadata: Metadata = {
   description:
     "Stories, podcasts, and moments from our campus — collected, curated, and told by students.",
 };
+export const viewport = {
+  width: "device-width",
+  initialScale: 1,
+};
 
 export default function RootLayout({
   children,
